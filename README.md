@@ -1,6 +1,6 @@
 # voam
 
-> [caution]
+> [!caution]
 > Work in progress. Not ready for consumption.
 
 Inspired by [foam](https://marketplace.visualstudio.com/items?itemName=foam.foam-vscode) with neovim in mind.
