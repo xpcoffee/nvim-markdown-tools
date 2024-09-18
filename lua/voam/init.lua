@@ -78,52 +78,8 @@ M.open_daily_note = function()
   end
 end
 
-local try_trigger_backtag = function(node)
-  local tag_name = vim.treesitter.get_node_text(node, 0)
-
-  -- check that [[note]] exists in the inline block (markdown tree doesn't know about [[]] by default)
-  local inline = node:parent():parent()
-  assert(inline and inline:type() == "inline")
-  local inline_content = vim.treesitter.get_node_text(inline, 0)
-  local next_tag_match = inline_content.gmatch(inline_content, "[[" .. tag_name .. "]]")
-  local tag_found = next_tag_match()
-
-  if tag_found then
-    print("tag found for " .. tag_name)
-
-    -- look to see if markown file for the note already exists
-    local file_path = vim.fn.expand(vim.fn.resolve(M.notes_root_path .. "/" .. tag_name .. ".md"))
-    if (type(file_path) == "string") then
-      if vim.fn.filereadable(file_path) == 1 then
-        vim.cmd('e ' .. file_path)
-      else
-        vim.ui.select(
-          { 'yes', 'no' },
-          { prompt = tag_name .. ".md does not exist. Create it?" },
-          function(choice)
-            if choice == "yes" then
-              os.execute('echo "# ' .. tag_name .. '" > ' .. file_path)
-              vim.cmd('e ' .. file_path)
-            end
-          end
-        )
-      end
-    else
-      error("Tag resolves to multiple files. Please check that it contains no wildcards.")
-    end
-  end
-end
-
 M.trigger_cursor = function()
   assert(M.notes_root_path, "notes_root_path must be configured")
-
-  local node = vim.treesitter.get_node({ lang = "markdown_inline" })
-
-  if node then
-    if node:type() == "link_text" then
-      try_trigger_backtag(node)
-    end
-  end
 end
 
 return M
