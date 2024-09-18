@@ -21,6 +21,43 @@ local function grep_tag()
 end
 
 M.picker_example = grep_tag
+
+local pickers = require 'telescope.pickers'
+local finders = require 'telescope.finders'
+local actions = require 'telescope.actions'
+local action_state = require 'telescope.actions.state'
+local conf = require 'telescope.config'.values
+
+function attach_mappings(prompt_bufnr, map)
+  actions.select_default:replace(function()
+    actions.close(prompt_bufnr)
+    local selection = action_state.get_selected_entry()
+    print(selection[1])
+  end)
+  return true
+end
+
+M.picker_example = function(opts)
+  opts = opts or { tag = "#test" } -- #test
+  pickers.new(opts, {
+    prompt_title = "Files matching tag",
+    finder = finders.new_onetime_job {
+      "ag -l " .. opts.tag,
+      {
+        entry_maker = function(entry)
+          return {
+            value = entry,
+            display = entry,
+            ordinal = entry
+          }
+        end
+      }
+    },
+    sorter = conf.generic_sorter(opts),
+    attach_mappings = attach_mappings
+  }):find()
+end
+
 M.open_daily_note = function()
   assert(M.notes_root_path, "notes_root_path must be configured")
   assert(M.journal_dir_name, "journal_dir_name must be configured")
