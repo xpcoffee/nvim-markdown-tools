@@ -5,6 +5,22 @@ M.setup = function(opts)
   M.journal_dir_name = opts.journal_dir_name
 end
 
+
+local builtins = require('telescope.builtin')
+
+local function grep_tag()
+  local text = vim.fn.expand("<cWORD>")
+  local next_match = string.gmatch(text, '#.+')
+
+  if next_match() then
+    builtins.grep_string {
+      results_title = text,
+      prompt_title = "Filter results",
+    }
+  end
+end
+
+M.picker_example = grep_tag
 M.open_daily_note = function()
   assert(M.notes_root_path, "notes_root_path must be configured")
   assert(M.journal_dir_name, "journal_dir_name must be configured")
