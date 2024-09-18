@@ -27,17 +27,23 @@ Something close to what I want exists in the [foam](https://marketplace.visualst
 
 ## Features
 
-| Feature                                                | Availability | Command                             |
-| ------------------------------------------------------ | ------------ | ----------------------------------- |
-| Goto note page by triggering backlink `[[backlink]]`   | Y            | `require "voam".trigger_backlink()` |
-| Goto today's journal note. Create if it doesn't exist. | Y            | `require "voam".open_daily_note()`  |
-| Go to yesterday's journal note.                        | N            |
-| Show files backlinked to the current file.             | N            |
-| Show files with tag `#tag`.                            | N            |
+| Feature                                                | Availability                                      | Command                            |
+| ------------------------------------------------------ | ------------------------------------------------- | ---------------------------------- |
+| ~Goto note page by triggering backlink `[[backlink]]`~ | Not needed. Can be done using the `marksman` lsp. | -                                  |
+| Goto today's journal note. Create if it doesn't exist. | Y                                                 | `require "voam".open_daily_note()` |
+| Go to yesterday's journal note.                        | N                                                 |                                    |
+| Show files backlinked to the current file.             | N                                                 |                                    |
+| Show files with tag `#tag`.                            | WIP                                               |                                    |
 
 ## Research
 
 Stream of consciousness as I build this
+
+### 2024-09-18
+
+Tried out other markdown lsps and the [`marksman` lsp](https://github.com/artempyanykh/marksman) can do backlinks and even has previews using shift-k. That allows me to remove functionality from this.
+
+One note: it's autosuggestions when typing in backlinks aren't very good. This could be nice to enhance in future..
 
 ### 2024-09-09
 
