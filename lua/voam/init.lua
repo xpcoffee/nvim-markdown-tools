@@ -5,7 +5,6 @@ M.setup = function(opts)
   M.journal_dir_name = opts.journal_dir_name
 end
 
-
 local builtins = require('telescope.builtin')
 
 local function grep_tag()
@@ -17,7 +16,9 @@ local function grep_tag()
       results_title = text,
       prompt_title = "Filter results",
     }
+    return true
   end
+  return false
 end
 
 M.picker_example = grep_tag
@@ -80,6 +81,7 @@ end
 
 M.trigger_cursor = function()
   assert(M.notes_root_path, "notes_root_path must be configured")
+  grep_tag()
 end
 
 return M
