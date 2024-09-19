@@ -30,10 +30,10 @@ Something close to what I want exists in the [foam](https://marketplace.visualst
 | Feature                                                | Availability                                      | Command                            |
 | ------------------------------------------------------ | ------------------------------------------------- | ---------------------------------- |
 | ~Goto note page by triggering backlink `[[backlink]]`~ | Not needed. Can be done using the `marksman` lsp. | -                                  |
-| Goto today's journal note. Create if it doesn't exist. | Y                                                 | `require "voam".open_daily_note()` |
+| Goto today's journal note. Create if it doesn't exist. | Y                                                 | `require "voam".open_daily_journal()` |
 | Show files with tag `#tag`.                            | Y                                               |  `require "voam".view_files_with_tag(tag)`                                   |
 | Show all tags in notes.                                | Y                                               |  `require "voam".list_all_tags()`                                   |
-| Go to yesterday's journal note.                        | N                                                 |                                    |
+| Go to daily journal note.                        | Y                                                 | `require "voam".open_daily_note()`                                   |
 | Show files backlinked to the current file.             | N                                                 |                                    |
 
 ## Research

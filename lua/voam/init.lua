@@ -6,6 +6,12 @@ M.setup = function(opts)
 end
 
 local builtins = require('telescope.builtin')
+local pickers = require 'telescope.pickers'
+local finders = require 'telescope.finders'
+local actions = require 'telescope.actions'
+local action_state = require 'telescope.actions.state'
+local conf = require('telescope.config').values
+local make_entry = require('telescope.make_entry')
 
 local function grep_tag()
   local text = vim.fn.expand("<cWORD>")
@@ -23,13 +29,6 @@ local function grep_tag()
 end
 
 M.picker_example = grep_tag
-
-local pickers = require 'telescope.pickers'
-local finders = require 'telescope.finders'
-local actions = require 'telescope.actions'
-local action_state = require 'telescope.actions.state'
-local conf = require('telescope.config').values
-local make_entry = require('telescope.make_entry')
 
 M.view_files_with_tag = function(tag)
   local tag = tag or vim.fn.expand("<cWORD>")
@@ -112,8 +111,63 @@ M.list_all_tags = function()
   }):find()
 end
 
+M.open_journal = function()
+  assert(M.notes_root_path, "notes_root_path must be configured")
+  assert(M.journal_dir_name, "journal_dir_name must be configured")
 
-M.open_daily_note = function()
+  local function get_date_options()
+    local options = {}
+    for i = 0, 5 do
+      local date = os.date("%Y-%m-%d", os.time() - i * 86400)
+      local label = date
+      if i == 0 then
+        label = label .. " (today)"
+      elseif i == 1 then
+        label = label .. " (yesterday)"
+      end
+      table.insert(options, { date = date, label = label })
+    end
+    return options
+  end
+
+  local date_options = get_date_options()
+
+  pickers.new({}, {
+    prompt_title = "Open Journal",
+    finder = finders.new_table {
+      results = date_options,
+      entry_maker = function(entry)
+        return {
+          value = entry.date,
+          display = entry.label,
+          ordinal = entry.label,
+        }
+      end,
+    },
+    sorter = conf.generic_sorter({}),
+    attach_mappings = function(prompt_bufnr, map)
+      actions.select_default:replace(function()
+        actions.close(prompt_bufnr)
+        local selection = action_state.get_selected_entry()
+        local journal_file_name = selection.value .. ".md"
+        local journal_file_path = vim.fn.expand(vim.fn.resolve(M.notes_root_path ..
+          "/" .. M.journal_dir_name .. "/" .. journal_file_name))
+
+        if vim.fn.filereadable(journal_file_path) == 1 then
+          vim.cmd('edit ' .. journal_file_path)
+        else
+          os.execute('echo "# ' .. selection.value .. '" > ' .. journal_file_path)
+          vim.cmd('edit ' .. journal_file_path)
+        end
+      end)
+      return true
+    end,
+  }):find()
+end
+
+
+
+M.open_daily_journal = function()
   assert(M.notes_root_path, "notes_root_path must be configured")
   assert(M.journal_dir_name, "journal_dir_name must be configured")
 
