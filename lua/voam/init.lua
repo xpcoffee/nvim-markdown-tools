@@ -1,7 +1,7 @@
 local M = {}
 
 M.setup = function(opts)
-  M.notes_root_path = opts.notes_root_path
+  M.notes_root_path = opts.notes_root_path:gsub("/$", "")
   M.journal_dir_name = opts.journal_dir_name
 end
 
@@ -165,6 +165,69 @@ M.open_journal = function()
   }):find()
 end
 
+M.list_backlinks = function()
+  assert(M.notes_root_path, "notes_root_path must be configured")
+
+  local current_file = vim.fn.expand('%:t:r')
+  local backlink_pattern = '[[' .. current_file .. ']]'
+  local files_with_backlinks = {}
+
+  local function search_backlinks(file)
+    local f = io.open(file, "r")
+    if f then
+      local content = f:read("*all")
+      f:close()
+      for line in content:gmatch("[^\r\n]+") do
+        if line:match(backlink_pattern) then
+          table.insert(files_with_backlinks, {filename = file, line = line})
+          break
+        end
+      end
+    end
+  end
+
+  for file in vim.fn.glob(M.notes_root_path .. '/**/*.md'):gmatch("[^\r\n]+") do
+    search_backlinks(file)
+  end
+
+  pickers.new({}, {
+    prompt_title = "Backlinks to " .. current_file,
+    finder = finders.new_table {
+      results = files_with_backlinks,
+      entry_maker = function(entry)
+        return {
+          value = entry,
+          display = entry.filename .. ": " .. entry.line,
+          ordinal = entry.filename,
+        }
+      end,
+    },
+    sorter = conf.generic_sorter({}),
+    attach_mappings = function(prompt_bufnr, map)
+      actions.select_default:replace(function()
+        actions.close(prompt_bufnr)
+        local selection = action_state.get_selected_entry()
+        local file_path = selection.value.filename
+        print('opening file: ' .. file_path)
+        vim.cmd('edit ' .. file_path)
+        local file = io.open(file_path, "r")
+        if file then
+          local content = file:read("*all")
+          file:close()
+          local line_num = 1
+          for line in content:gmatch("[^\r\n]+") do
+            if line == selection.value.line then
+              vim.api.nvim_win_set_cursor(0, {line_num, 0})
+              break
+            end
+            line_num = line_num + 1
+          end
+        end
+      end)
+      return true
+    end,
+  }):find()
+end
 
 
 M.open_daily_journal = function()

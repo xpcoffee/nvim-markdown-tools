@@ -34,11 +34,15 @@ Something close to what I want exists in the [foam](https://marketplace.visualst
 | Show files with tag `#tag`.                            | Y                                               |  `require "voam".view_files_with_tag(tag)`                                   |
 | Show all tags in notes.                                | Y                                               |  `require "voam".list_all_tags()`                                   |
 | Go to daily journal note.                        | Y                                                 | `require "voam".open_daily_note()`                                   |
-| Show files backlinked to the current file.             | N                                                 |                                    |
+| Show files backlinked to the current file.             | Y                                                 | `require "voam".list_backlinks_to_current_file()`                                   |
 
 ## Research
 
 Stream of consciousness as I build this
+
+### 2024-09-20
+
+I'm trying out cursor editor to help add functionality. So far it's working well, and it's showing me some good picker patterns.
 
 ### 2024-09-18
 
