@@ -69,6 +69,12 @@ Stream of consciousness as I build this
 
 ### 2024-09-20
 
+This is turning into a set of additional functionality for working with markdown files.
+I'm thinking I should move away from implying that this is a personal knowledge management system.
+Better name could be markdown-tools?
+
+### 2024-09-19
+
 I'm trying out cursor editor to help add functionality. So far it's working well, and it's showing me some good picker patterns.
 
 ### 2024-09-18
