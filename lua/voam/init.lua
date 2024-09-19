@@ -13,24 +13,8 @@ local action_state = require 'telescope.actions.state'
 local conf = require('telescope.config').values
 local make_entry = require('telescope.make_entry')
 
-local function grep_tag()
-  local text = vim.fn.expand("<cWORD>")
-  local next_match = string.gmatch(text, '#[a-zA-Z0-9-]+')
-  print(text)
-
-  if next_match() then
-    builtins.grep_string {
-      results_title = text,
-      prompt_title = "Filter results",
-    }
-    return true
-  end
-  return false
-end
-
-M.picker_example = grep_tag
-
 M.view_files_with_tag = function(tag)
+  assert(M.notes_root_path, "notes_root_path must be configured")
   local tag = tag or vim.fn.expand("<cWORD>")
   local next_match = string.match(tag, '#[a-zA-Z0-9-]+')
   
@@ -248,11 +232,6 @@ M.open_daily_journal = function()
       vim.cmd('e ' .. daily_note_file_path)
     end
   end
-end
-
-M.trigger_cursor = function()
-  assert(M.notes_root_path, "notes_root_path must be configured")
-  M.view_files_with_tag()
 end
 
 return M

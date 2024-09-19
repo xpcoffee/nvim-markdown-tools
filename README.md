@@ -36,6 +36,33 @@ Something close to what I want exists in the [foam](https://marketplace.visualst
 | Go to daily journal note.                        | Y                                                 | `require "voam".open_daily_note()`                                   |
 | Show files backlinked to the current file.             | Y                                                 | `require "voam".list_backlinks_to_current_file()`                                   |
 
+## Example configuration
+
+```lua
+return {
+  "xpcoffee/voam",
+  dependencies = {
+    "nvim-telescope/telescope.nvim"
+  },
+  config = function()
+    local voam = require "voam"
+    voam.setup({
+      notes_root_path = "~/code/notes/",
+      journal_dir_name = "journal"
+    })
+
+    -- journal
+    vim.keymap.set("n", "<leader>nd", voam.open_daily_journal, { desc = "Open today's journal", remap = false })
+    vim.keymap.set("n", "<leader>nj", voam.open_journal, { desc = "Open a journal note from the last 5 days", remap = false })
+    -- backlinks
+    vim.keymap.set("n", "<leader>nb", voam.list_backlinks, { desc = "List backlinks", remap = false })
+    -- tags
+    vim.keymap.set("n", "<leader>nta", voam.list_all_tags, { desc = "List all tags", remap = false })
+    vim.keymap.set("n", "<leader>ntt", voam.view_files_with_tag, { desc = "View files for tag under cursor", remap = false })
+  end
+}
+
+```
 ## Research
 
 Stream of consciousness as I build this
