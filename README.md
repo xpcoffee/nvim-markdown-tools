@@ -1,23 +1,28 @@
 # nvim-markdown-tools
 
-> [!caution]
-> Work in progress. Not ready for consumption.
+<!--toc:start-->
 
-## What
+- [nvim-markdown-tools](#nvim-markdown-tools)
+  - [About](#about)
+    - [Why does this exist?](#why-does-this-exist)
+    - [Tenets](#tenets)
+  - [Features](#features)
+  - [Installation and configuration](#installation-and-configuration)
+  - [Research](#research)
+  <!--toc:end-->
 
-This a neovim plugin for quick navigation and creation of backlinked markdown notes.
+This a neovim plugin that enhances navigation between markdown documents under a common folder.
 
-## Why
+The primary goal is to improve finding/linking notes similar to funcitonality found in the [foam VSCode plugin](https://marketplace.visualstudio.com/items?itemName=foam.foam-vscode).
 
-Existing tooling I've tried (circa 2024-08) such as vimwiki and tools based off of it, are optimized to work with and manage a hierarchical documentation system, complete with its database.
+## About
 
-I want something simpler. I have loose notes that are backlinked, and my hunch is I don't need a full system or a database to work with them effectively.
+### Why does this exist?
 
-Something close to what I want exists in the [foam](https://marketplace.visualstudio.com/items?itemName=foam.foam-vscode) VSCode plugin. I feel it can be even simpler, and I want it in neovim.
+Existing tooling for woriking with markdown notes (circa 2024-08) are complete notetaking or documentation systems e.g. vimwiki. I want something simpler. I have loose notes that are backlinked, and my hunch is I don't need a full system or a database to work with them effectively.
 
-## Tenets
+### Tenets
 
-- Personal. This is for a single-person's notes.
 - Optimized for core usecases. Make a great experience for a small set of core workflows. Agressively avoid supporting more. Some effects:
   - Markdown only.
   - De-normalized note-taking only. No heirarchy with 1 exception: daily notes.
@@ -27,16 +32,32 @@ Something close to what I want exists in the [foam](https://marketplace.visualst
 
 ## Features
 
-| Feature                                                | Availability                                      | Command                            |
-| ------------------------------------------------------ | ------------------------------------------------- | ---------------------------------- |
-| ~Goto note page by triggering backlink `[[backlink]]`~ | Not needed. Can be done using the `marksman` lsp. | -                                  |
-| Goto today's journal note. Create if it doesn't exist. | Y                                                 | `require "nvim-markdown-tools".open_daily_journal()` |
-| Show files with tag `#tag`.                            | Y                                               |  `require "nvim-markdown-tools".view_files_with_tag(tag)`                                   |
-| Show all tags in notes.                                | Y                                               |  `require "nvim-markdown-tools".list_all_tags()`                                   |
-| Go to daily journal note.                        | Y                                                 | `require "nvim-markdown-tools".open_daily_note()`                                   |
-| Show files backlinked to the current file.             | Y                                                 | `require "nvim-markdown-tools".list_backlinks_to_current_file()`                                   |
+Core workflows
 
-## Example configuration
+0. Notes are in a single notes folder
+1. Backlink between files using `[[my/note]]` syntax.
+   - Navigate to the linked file
+   - See all other files that backlink to this one within the notes folder
+   - Create a new file if a backlink does not already exist
+2. Add tags to files using `#mytag` syntax.
+   - See all other files that have the same tag
+   - Discover all tags in the notes folder
+3. Daily journal files under a specified folder.
+   - Go to today's journal file; create it if it doesn't yet exist.
+   - Go to a journal file from the last 5 days.
+
+| Feature                                                | Availability                                      | Command                                                          |
+| ------------------------------------------------------ | ------------------------------------------------- | ---------------------------------------------------------------- |
+| ~Goto note page by triggering backlink `[[backlink]]`~ | Not needed. Can be done using the `marksman` lsp. | -                                                                |
+| Goto today's journal note. Create if it doesn't exist. | Y                                                 | `require "nvim-markdown-tools".open_daily_journal()`             |
+| Show files with tag `#tag`.                            | Y                                                 | `require "nvim-markdown-tools".view_files_with_tag(tag)`         |
+| Show all tags in notes.                                | Y                                                 | `require "nvim-markdown-tools".list_all_tags()`                  |
+| Go to daily journal note.                              | Y                                                 | `require "nvim-markdown-tools".open_daily_note()`                |
+| Show files backlinked to the current file.             | Y                                                 | `require "nvim-markdown-tools".list_backlinks_to_current_file()` |
+
+## Installation and configuration
+
+Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 
 ```lua
 return {
@@ -46,23 +67,28 @@ return {
   },
   config = function()
     local nvim_markdown_tools = require "nvim-markdown-tools"
+
     nvim_markdown_tools.setup({
+      -- the folder that holds the notes; tag and backlink searches happen relative to this
       notes_root_path = "~/code/notes/",
+      -- the name of the folder that holds daily journals
       journal_dir_name = "journal"
     })
 
-    -- journal
+    -- journal actions
     vim.keymap.set("n", "<leader>nd", nvim_markdown_tools.open_daily_journal, { desc = "Open today's journal", remap = false })
     vim.keymap.set("n", "<leader>nj", nvim_markdown_tools.open_journal, { desc = "Open a journal note from the last 5 days", remap = false })
-    -- backlinks
+    -- backlink actions
+    -- use in combination with functionality from the marksman LSP https://github.com/artempyanykh/marksman
     vim.keymap.set("n", "<leader>nb", nvim_markdown_tools.list_backlinks, { desc = "List backlinks", remap = false })
-    -- tags
+    -- tag actions
     vim.keymap.set("n", "<leader>nta", nvim_markdown_tools.list_all_tags, { desc = "List all tags", remap = false })
     vim.keymap.set("n", "<leader>ntt", nvim_markdown_tools.view_files_with_tag, { desc = "View files for tag under cursor", remap = false })
   end
 }
 
 ```
+
 ## Research
 
 Stream of consciousness as I build this
@@ -71,7 +97,8 @@ Stream of consciousness as I build this
 
 This is turning into a set of additional functionality for working with markdown files.
 I'm thinking I should move away from implying that this is a personal knowledge management system.
-Better name could be markdown-tools?
+
+Renaming to `nvim-markdown-tools`.
 
 ### 2024-09-19
 
