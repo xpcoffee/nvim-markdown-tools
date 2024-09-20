@@ -2,23 +2,11 @@
 
 <img src="https://github.com/user-attachments/assets/8471e858-c781-4169-8813-8fe9c020a3ca" width="200px"></img>
 
-
-<!--toc:start-->
-
-- [nvim-markdown-tools](#nvim-markdown-tools)
-  - [About](#about)
-    - [Why does this exist?](#why-does-this-exist)
-    - [Tenets](#tenets)
-  - [Features](#features)
-  - [Installation and configuration](#installation-and-configuration)
-  - [Research](#research)
-  <!--toc:end-->
-
 This a neovim plugin that enhances navigation between markdown documents under a common folder.
 
 The primary goal is to improve finding/linking notes similar to funcitonality found in the [foam VSCode plugin](https://marketplace.visualstudio.com/items?itemName=foam.foam-vscode).
 
-## About
+## ☕ About
 
 ### Why does this exist?
 
@@ -33,7 +21,7 @@ Existing tooling for woriking with markdown notes (circa 2024-08) are complete n
 - No database. This is for personal note-taking. Processing files on the fly is quick enough that we don't need indices and the like.
 - Lean on the ecosystem. Do not build functionality here that can already be done by other plugins. e.g. grepping and finding files by name exists already. e.g.2. file-management plugins already exist.
 
-## Features
+## ⚙️ Features
 
 Core workflows
 
@@ -58,7 +46,7 @@ Core workflows
 | Go to daily journal note.                              | Y                                                 | `require "nvim-markdown-tools".open_daily_note()`                |
 | Show files backlinked to the current file.             | Y                                                 | `require "nvim-markdown-tools".list_backlinks_to_current_file()` |
 
-## Installation and configuration
+## ⌨️ Installation and configuration
 
 Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 
@@ -92,7 +80,7 @@ return {
 
 ```
 
-## Research
+## 🔍 Research
 
 Stream of consciousness as I build this
 
