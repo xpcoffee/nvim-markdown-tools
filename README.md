@@ -1,5 +1,8 @@
 # nvim-markdown-tools
 
+<img src="https://github.com/user-attachments/assets/8471e858-c781-4169-8813-8fe9c020a3ca" width="200px"></img>
+
+
 <!--toc:start-->
 
 - [nvim-markdown-tools](#nvim-markdown-tools)
