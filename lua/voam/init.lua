@@ -153,7 +153,7 @@ M.list_backlinks = function()
   assert(M.notes_root_path, "notes_root_path must be configured")
 
   local current_file = vim.fn.expand('%:t:r')
-  local backlink_pattern = '[[' .. current_file .. ']]'
+  local backlink_pattern = '%[%[' .. current_file .. '%]%]'
   local files_with_backlinks = {}
 
   local function search_backlinks(file)
