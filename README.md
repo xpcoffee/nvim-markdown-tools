@@ -1,4 +1,4 @@
-# voam
+# nvim-markdown-tools
 
 > [!caution]
 > Work in progress. Not ready for consumption.
@@ -30,35 +30,35 @@ Something close to what I want exists in the [foam](https://marketplace.visualst
 | Feature                                                | Availability                                      | Command                            |
 | ------------------------------------------------------ | ------------------------------------------------- | ---------------------------------- |
 | ~Goto note page by triggering backlink `[[backlink]]`~ | Not needed. Can be done using the `marksman` lsp. | -                                  |
-| Goto today's journal note. Create if it doesn't exist. | Y                                                 | `require "voam".open_daily_journal()` |
-| Show files with tag `#tag`.                            | Y                                               |  `require "voam".view_files_with_tag(tag)`                                   |
-| Show all tags in notes.                                | Y                                               |  `require "voam".list_all_tags()`                                   |
-| Go to daily journal note.                        | Y                                                 | `require "voam".open_daily_note()`                                   |
-| Show files backlinked to the current file.             | Y                                                 | `require "voam".list_backlinks_to_current_file()`                                   |
+| Goto today's journal note. Create if it doesn't exist. | Y                                                 | `require "nvim-markdown-tools".open_daily_journal()` |
+| Show files with tag `#tag`.                            | Y                                               |  `require "nvim-markdown-tools".view_files_with_tag(tag)`                                   |
+| Show all tags in notes.                                | Y                                               |  `require "nvim-markdown-tools".list_all_tags()`                                   |
+| Go to daily journal note.                        | Y                                                 | `require "nvim-markdown-tools".open_daily_note()`                                   |
+| Show files backlinked to the current file.             | Y                                                 | `require "nvim-markdown-tools".list_backlinks_to_current_file()`                                   |
 
 ## Example configuration
 
 ```lua
 return {
-  "xpcoffee/voam",
+  "xpcoffee/nvim-markdown-tools",
   dependencies = {
     "nvim-telescope/telescope.nvim"
   },
   config = function()
-    local voam = require "voam"
-    voam.setup({
+    local nvim_markdown_tools = require "nvim-markdown-tools"
+    nvim_markdown_tools.setup({
       notes_root_path = "~/code/notes/",
       journal_dir_name = "journal"
     })
 
     -- journal
-    vim.keymap.set("n", "<leader>nd", voam.open_daily_journal, { desc = "Open today's journal", remap = false })
-    vim.keymap.set("n", "<leader>nj", voam.open_journal, { desc = "Open a journal note from the last 5 days", remap = false })
+    vim.keymap.set("n", "<leader>nd", nvim_markdown_tools.open_daily_journal, { desc = "Open today's journal", remap = false })
+    vim.keymap.set("n", "<leader>nj", nvim_markdown_tools.open_journal, { desc = "Open a journal note from the last 5 days", remap = false })
     -- backlinks
-    vim.keymap.set("n", "<leader>nb", voam.list_backlinks, { desc = "List backlinks", remap = false })
+    vim.keymap.set("n", "<leader>nb", nvim_markdown_tools.list_backlinks, { desc = "List backlinks", remap = false })
     -- tags
-    vim.keymap.set("n", "<leader>nta", voam.list_all_tags, { desc = "List all tags", remap = false })
-    vim.keymap.set("n", "<leader>ntt", voam.view_files_with_tag, { desc = "View files for tag under cursor", remap = false })
+    vim.keymap.set("n", "<leader>nta", nvim_markdown_tools.list_all_tags, { desc = "List all tags", remap = false })
+    vim.keymap.set("n", "<leader>ntt", nvim_markdown_tools.view_files_with_tag, { desc = "View files for tag under cursor", remap = false })
   end
 }
 
