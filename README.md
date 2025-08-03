@@ -1,3 +1,5 @@
+> ⚠️ 2025-08-01 Defunct - I am splitting this out into different individual tools rather than one larger repo. See my repos starting with `nvim-*`
+
 # nvim-markdown-tools
 
 <img src="https://github.com/user-attachments/assets/8471e858-c781-4169-8813-8fe9c020a3ca" width="200px"></img>
